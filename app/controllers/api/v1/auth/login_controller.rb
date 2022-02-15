@@ -17,8 +17,9 @@ class Api::V1::Auth::LoginController < ApplicationController
     params.permit(:email, :password)
   end
 
+  private
+
   def set_user
     @user ||= User.find_by_email(params[:email])
   end
-
 end

@@ -9,8 +9,8 @@ class User < ApplicationRecord
 
   validates :first_name, presence: true, length: { in: 2..50 }
   validates :last_name, presence: true, length: { in: 2..50 }
-  validates :email, presence: true, uniqueness: true, length: { maximum: 250 }
-  validates :password, presence: true, length: { in: 8..16 }, confirmation: true
+  validates :email, presence: true, uniqueness: true, length: { maximum: 250 }, on: :create
+  validates :password, presence: true, length: { in: 8..16 }, confirmation: true, on: :create
   validates :birthday, date: { before: Proc.new { Date.today } }
   validates :gender, presence: true, inclusion: { in: %w[not_specified female male], message: '%{value} is not a valid status' }
 

@@ -5,7 +5,6 @@ module Authenticatable
 
   def logged_in_user
     return nil unless (token = JwtService.decoded_token(auth_header))
-
     user_id = token[0]['user_id']
     @current_user = User.find_by(id: user_id)
   end
