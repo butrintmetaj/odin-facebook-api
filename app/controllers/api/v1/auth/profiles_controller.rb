@@ -14,9 +14,9 @@ class Api::V1::Auth::ProfilesController < ApplicationController
 
   def attach_avatar
     if @current_user.avatar.attach(params[:avatar])
-      render json: { user: @current_user}, status: :ok
+      render json: { user: @current_user }, status: :ok
     else
-      render json: { message: 'Could not attach avatar'}, status: :unprocessable_entity
+      render json: { message: 'Could not attach avatar' }, status: :unprocessable_entity
     end
   end
 
