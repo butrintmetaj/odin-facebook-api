@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   has_secure_password
+  has_one_attached :avatar
 
   enum gender: {
     not_specified: 0,
@@ -13,5 +14,6 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { in: 8..16 }, confirmation: true, on: :create
   validates :birthday, date: { before: Proc.new { Date.today } }
   validates :gender, presence: true, inclusion: { in: %w[not_specified female male], message: '%{value} is not a valid status' }
+  validates :avatar, blob: { content_type: ['image/png', 'image/jpg', 'image/jpeg'], size_range: 1..(5.megabytes) }
 
 end
