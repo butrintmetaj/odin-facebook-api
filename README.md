@@ -4,12 +4,10 @@
 
 For local development you will need to install the ruby version listed below
 
-#You will also need:
-* Postgres
-
 ## Require
 * Ruby: 3.0
 * Rails: ^7.0
+* Postgres
 
 ## Features
 
