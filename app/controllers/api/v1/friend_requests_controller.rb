@@ -1,10 +1,16 @@
 class Api::V1::FriendRequestsController < ApplicationController
   before_action :set_friend_request, only: [:approve, :destroy]
+  before_action :set_requestee, only: [:create]
+
+  def index
+    @friend_requests = @current_user.received_friend_requests.status_pending
+
+    render json: { data: @friend_requests}, status: :ok
+  end
 
   def create
-    @requestee = User.find(params[:requestee_id])
-
     @friend_request = @current_user.sent_friend_requests.new(requestee_id: @requestee.id)
+
     authorize @friend_request
 
     if @friend_request.save
@@ -37,6 +43,12 @@ class Api::V1::FriendRequestsController < ApplicationController
 
   def set_friend_request
     @friend_request ||= FriendRequest.find(params[:id])
+  end
+
+  private
+
+  def set_requestee
+    @requestee = User.find(params[:requestee_id])
   end
 
 end

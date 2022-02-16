@@ -12,7 +12,7 @@ Rails.application.routes.draw do
       end
 
       resources :posts
-      resources :friend_requests, only: [:create, :destroy] do
+      resources :friend_requests, only: [:index, :create, :destroy] do
         put :approve, on: :member
       end
     end

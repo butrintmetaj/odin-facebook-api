@@ -7,9 +7,9 @@ class FriendRequestPolicy < ApplicationPolicy
   end
 
   def create?
-    !FriendRequest.where(requester_id: user.id, requestee_id:friend_request.requestee_id).or(FriendRequest.where(requester_id: friend_request.requestee_id, requestee_id: user.id)).exists?
+    !FriendRequest.where(requester_id: user.id, requestee_id: friend_request.requestee_id).or(FriendRequest.where(requester_id: friend_request.requestee_id, requestee_id: user.id)).exists? &&
+      user.id != friend_request.requestee_id
   end
-
 
   def update?
     user.id == friend_request.requestee_id && friend_request.status == 'pending'
