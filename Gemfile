@@ -51,3 +51,5 @@ gem 'jwt'
 gem 'date_validator'
 
 gem 'activestorage-validator'
+
+gem "pundit"
