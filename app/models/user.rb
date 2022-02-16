@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   has_secure_password
+
   has_one_attached :avatar
+  has_many :posts
 
   enum gender: {
     not_specified: 0,

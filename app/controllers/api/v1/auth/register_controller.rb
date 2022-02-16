@@ -6,7 +6,7 @@ class Api::V1::Auth::RegisterController < ApplicationController
 
     if @user.save
       token = JwtService.encode_token({ user_id: @user.id })
-      render json: { user: @user, token: token }
+      render json: { user: @user, token: token }, status: :created
     else
       render json: @user.errors, status: :unprocessable_entity
     end
