@@ -3,6 +3,8 @@ class User < ApplicationRecord
 
   has_one_attached :avatar
   has_many :posts
+  has_many :sent_friend_requests, class_name: 'FriendRequest', foreign_key: 'requester_id'
+  has_many :received_friend_requests, class_name: 'FriendRequest', foreign_key: 'requestee_id'
 
   enum gender: {
     not_specified: 0,
