@@ -1,5 +1,5 @@
 class Api::V1::PostsController < ApplicationController
-  before_action :set_post, only: [:show, :update, :destroy]
+  before_action :set_post, only: [:show, :update, :destroy, :like, :unlike]
 
   def index
     # not final
@@ -37,6 +37,22 @@ class Api::V1::PostsController < ApplicationController
       render json: { data: {}, message: 'Post deleted' }, status: :ok
     else
       render json: { message: 'Could not delete post' }, status: :unauthorized
+    end
+  end
+
+  def like
+    if @post.like(@current_user.id)
+      render json: { data: {}, message: 'Post liked' }, status: :created
+    else
+      render json: { error: 'Post already liked' }, status: :unprocessable_entity
+    end
+  end
+
+  def unlike
+    if @post.unlike(@current_user.id)
+      render json: { data: {}, message: 'Post unliked' }, status: :ok
+    else
+      render json: { error: 'Like does not exist' }, status: :unauthorized
     end
   end
 

@@ -11,10 +11,19 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :posts
+      concern :likeable do
+        post :like, on: :member
+        delete :unlike, on: :member
+      end
+
+      resources :posts, shallow: true, concerns: :likeable do
+        resources :comments, concerns: :likeable
+      end
+
       resources :friend_requests, only: [:index, :create, :destroy] do
         put :approve, on: :member
       end
+
     end
   end
 end
