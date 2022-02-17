@@ -5,6 +5,9 @@ class User < ApplicationRecord
   has_many :posts
   has_many :sent_friend_requests, class_name: 'FriendRequest', foreign_key: 'requester_id'
   has_many :received_friend_requests, class_name: 'FriendRequest', foreign_key: 'requestee_id'
+  has_many :comments
+  has_many :friendships
+  has_many :reverse_friendships, class_name: 'Friendship', foreign_key: 'friend_id'
 
   enum gender: {
     not_specified: 0,
@@ -19,5 +22,9 @@ class User < ApplicationRecord
   validates :birthday, date: { before: Proc.new { Date.today } }
   validates :gender, presence: true, inclusion: { in: %w[not_specified female male], message: '%{value} is not a valid status' }
   validates :avatar, blob: { content_type: ['image/png', 'image/jpg', 'image/jpeg'], size_range: 1..(5.megabytes) }
+
+  def friends
+    User.where(id: friendships.pluck(:friend_id) + reverse_friendships.pluck(:user_id))
+  end
 
 end

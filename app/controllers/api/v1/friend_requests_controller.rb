@@ -24,6 +24,7 @@ class Api::V1::FriendRequestsController < ApplicationController
     authorize @friend_request, :update?
 
     if @friend_request.update(status: FriendRequest.statuses[:accepted])
+      @current_user.friendships.create(friend_id: @friend_request.requester_id)
       render json: { data: @friend_request }, status: :ok
     else
       render json: { message: 'Could not update request status' }, status: :unprocessable_entity

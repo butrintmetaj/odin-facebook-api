@@ -24,6 +24,8 @@ Rails.application.routes.draw do
         put :approve, on: :member
       end
 
+      resources :friendships, only: [:index, :destroy]
+
     end
   end
 end
