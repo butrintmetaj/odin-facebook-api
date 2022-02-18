@@ -53,3 +53,5 @@ gem 'date_validator'
 gem 'activestorage-validator'
 
 gem "pundit"
+
+gem 'jsonapi-serializer'
