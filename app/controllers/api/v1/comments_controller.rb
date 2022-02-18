@@ -3,28 +3,28 @@ class Api::V1::CommentsController < ApplicationController
   before_action :set_post, only: [:index, :create]
 
   def index
-    render json: { data: @post }, status: :ok
+    render json: PostSerializer.new(@post, include: [:user, :comments]).serializable_hash, status: :ok
   end
 
   def create
     @comment = @post.comments.new(body: params[:body], user_id: @current_user.id)
 
     if @comment.save
-      render json: { data: @comment }, status: :created
+      render json: CommentSerializer.new(@comment).serializable_hash, status: :created
     else
       render json: { message: 'Could not create comment' }, status: :unprocessable_entity
     end
   end
 
   def show
-    render json: { data: @comment }, status: :ok
+    render json: CommentSerializer.new(@comment).serializable_hash, status: :ok
   end
 
   def update
     authorize(@comment)
 
     if @comment.update(body: params[:body])
-      render json: { data: @comment }, status: :ok
+      render json: CommentSerializer.new(@comment).serializable_hash, status: :ok
     else
       render json: { message: 'Could not update comment' }, status: :unprocessable_entity
     end

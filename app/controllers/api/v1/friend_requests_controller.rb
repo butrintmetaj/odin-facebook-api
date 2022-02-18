@@ -1,11 +1,10 @@
 class Api::V1::FriendRequestsController < ApplicationController
   before_action :set_friend_request, only: [:approve, :destroy]
   before_action :set_requestee, only: [:create]
+  before_action :set_pending_friend_requests, only: [:index, :count]
 
   def index
-    @friend_requests = @current_user.received_friend_requests.status_pending
-
-    render json: { data: @friend_requests }, status: :ok
+    render json: { data: @pending_friend_requests }, status: :ok
   end
 
   def create
@@ -34,11 +33,22 @@ class Api::V1::FriendRequestsController < ApplicationController
   def destroy
     authorize @friend_request
     if @friend_request.destroy
-
       render json: { data: [], message: 'Request deleted successfully' }, status: :ok
     else
-      render json: { message: 'Could not update delet status' }, status: :unprocessable_entity
+      render json: { message: 'Could not update delete status' }, status: :unprocessable_entity
     end
+  end
+
+  def count
+    @pending_friend_requests = @pending_friend_requests.count
+
+    render json: { pending_friend_requests: @pending_friend_requests }, status: :ok
+  end
+
+  private
+
+  def set_pending_friend_requests
+    @pending_friend_requests = @current_user.received_friend_requests.status_pending
   end
 
   private

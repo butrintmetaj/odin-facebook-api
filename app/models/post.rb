@@ -9,4 +9,6 @@ class Post < ApplicationRecord
             presence: true, if: -> { self.body.blank? }
   validates :body, length: { in: 10..100 }, presence: true, if: -> { self.image.blank? }
 
+  scope :latest, -> { order('created_at DESC') }
+
 end

@@ -2,15 +2,16 @@ class Api::V1::PostsController < ApplicationController
   before_action :set_post, only: [:show, :update, :destroy, :like, :unlike]
 
   def index
-    # not final
-    render json: { data: Post.all }, status: :ok
+    @posts = Post.where(user_id: @current_user.friends_ids + [@current_user.id]).includes(:user, :comments).latest
+
+    render json: PostSerializer.new(@posts, include: [:user, :comments]).serializable_hash, status: :ok
   end
 
   def create
     @post = @current_user.posts.new(post_params)
 
     if @post.save
-      render json: { data: @post }, status: :created
+      render json: PostSerializer.new(@post).serializable_hash, status: :created
     else
       render json: { message: 'Could not create post' }, status: :unprocessable_entity
     end
@@ -24,7 +25,7 @@ class Api::V1::PostsController < ApplicationController
     authorize(@post)
 
     if @post.update(post_params)
-      render json: { data: @post }, status: :ok
+      render json: PostSerializer.new(@post).serializable_hash, status: :ok
     else
       render json: { message: 'Could not update post' }, status: :unprocessable_entity
     end

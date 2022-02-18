@@ -23,8 +23,12 @@ class User < ApplicationRecord
   validates :gender, presence: true, inclusion: { in: %w[not_specified female male], message: '%{value} is not a valid status' }
   validates :avatar, blob: { content_type: ['image/png', 'image/jpg', 'image/jpeg'], size_range: 1..(5.megabytes) }
 
+  def friends_ids
+    friendships.pluck(:friend_id) + reverse_friendships.pluck(:user_id)
+  end
+
   def friends
-    User.where(id: friendships.pluck(:friend_id) + reverse_friendships.pluck(:user_id))
+    User.where(id: friends_ids)
   end
 
 end

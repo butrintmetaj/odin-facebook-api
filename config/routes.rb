@@ -22,9 +22,12 @@ Rails.application.routes.draw do
 
       resources :friend_requests, only: [:index, :create, :destroy] do
         put :approve, on: :member
+        get :count, on: :collection
       end
 
       resources :friendships, only: [:index, :destroy]
+
+      resources :users, only: [:index, :show]
 
     end
   end
