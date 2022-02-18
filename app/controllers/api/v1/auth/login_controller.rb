@@ -5,7 +5,7 @@ class Api::V1::Auth::LoginController < ApplicationController
   def login
     if @user&.authenticate(params[:password])
       token = JwtService.encode_token({ user_id: @user.id })
-      render json: { user: @user, token: token }
+      render json: (UserSerializer.new(@user).serializable_hash).merge!(token: token)
     else
       render json: { error: 'Credentials do not match our records' }, status: :unauthorized
     end
