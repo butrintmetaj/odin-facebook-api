@@ -1,19 +1,19 @@
 class Api::V1::FriendshipsController < ApplicationController
-  before_action :set_friendship, only: [ :destroy]
+  before_action :set_friendship, only: [:destroy]
 
   def index
-    @friends = @current_user.friends
+    @friends = User.where(id: @current_user.friends_ids)
 
-    render json: { data: @friends }, status: :ok
+    render json: UserSerializer.new(@friends).serializable_hash, status: :ok
   end
 
   def destroy
     authorize(@friendship)
 
     if @friendship.destroy
-      render json: { data: {}, message: "Friendship removed" }, status: :ok
+      render json: { data: {}, message: 'Friendship removed' }, status: :ok
     else
-      render json: { message: "Could not delete friend" }, status: :unauthorized
+      render json: { message: 'Could not delete friend' }, status: :unauthorized
     end
   end
 
