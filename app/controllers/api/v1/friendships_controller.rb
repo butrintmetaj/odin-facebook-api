@@ -2,9 +2,9 @@ class Api::V1::FriendshipsController < ApplicationController
   before_action :set_friendship, only: [:destroy]
 
   def index
-    @friends = User.where(id: @current_user.friends_ids).includes(:friendships, :reverse_friendships)
+    @friends = User.where(id: @current_user.friends_ids).includes(:friendships, :reverse_friendships, :posts)
 
-    render json: UserSerializer.new(@friends,{ params: { current_user_id: @current_user.id }}).serializable_hash, status: :ok
+    render json: UserSerializer.new(@friends,{include: [:posts],  params: { current_user_id: @current_user.id } }).serializable_hash, status: :ok
   end
 
   def destroy
