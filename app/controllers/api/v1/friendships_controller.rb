@@ -4,7 +4,7 @@ class Api::V1::FriendshipsController < ApplicationController
   def index
     @friends = User.where(id: @current_user.friends_ids)
 
-    render json: UserSerializer.new(@friends).serializable_hash, status: :ok
+    render json: UserSerializer.new(@friends,{ params: { current_user_id: @current_user.id }}).serializable_hash, status: :ok
   end
 
   def destroy
