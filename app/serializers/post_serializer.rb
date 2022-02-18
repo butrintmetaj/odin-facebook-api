@@ -2,7 +2,7 @@ class PostSerializer
   include JSONAPI::Serializer
 
   include AvatarHelper
-  attributes :id, :body, :image
+  attributes :id, :body, :image, :likes_count
 
   attribute :image do |post|
     image_url(post)

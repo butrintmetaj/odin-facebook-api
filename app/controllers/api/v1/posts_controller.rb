@@ -18,7 +18,7 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def show
-    render json: { data: @post }, status: :ok
+    render json: PostSerializer.new(@post).serializable_hash, status: :ok
   end
 
   def update
