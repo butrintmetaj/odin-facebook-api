@@ -9,11 +9,8 @@ class UserSerializer
     avatar_url(user)
   end
 
-  attribute :friends, if: Proc.new { |record, params|
-    params && params[:current_user_id]
-  } do |user, params|
-    user.friendships.find { |f| f.friend_id == params[:current_user_id] }.present? ||
-      user.reverse_friendships.find { |f| f.user_id == params[:current_user_id] }.present?
+  attribute :friends do |user, params|
+    user.friend?(params[:current_user_id])
   end
 
   has_many :posts

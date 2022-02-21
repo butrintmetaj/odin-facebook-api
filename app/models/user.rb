@@ -24,11 +24,19 @@ class User < ApplicationRecord
   validates :avatar, blob: { content_type: ['image/png', 'image/jpg', 'image/jpeg'], size_range: 1..(5.megabytes) }
 
   def friends_ids
-    friendships.pluck(:friend_id) + reverse_friendships.pluck(:user_id)
+    friends.ids
+  end
+
+  def friend?(user_id)
+    friends.exists?(id: user_id)
   end
 
   def friends
-    User.where(id: friends_ids)
+    User
+      .joins('LEFT JOIN friendships f on users.id = f.friend_id')
+      .joins('LEFT JOIN friendships f2 on users.id = f2.user_id')
+      .where('f.user_id = :id or f2.friend_id = :id', id: id)
+      .distinct
   end
 
 end
