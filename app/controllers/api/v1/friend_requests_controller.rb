@@ -4,7 +4,7 @@ class Api::V1::FriendRequestsController < ApplicationController
   before_action :set_pending_friend_requests, only: [:index, :count]
 
   def index
-    render json: { data: @pending_friend_requests }, status: :ok
+    render json: FriendRequestSerializer.new(@pending_friend_requests, include: [:requester, :requestee]).serializable_hash,  status: :ok
   end
 
   def create
@@ -13,7 +13,7 @@ class Api::V1::FriendRequestsController < ApplicationController
     authorize @friend_request
 
     if @friend_request.save
-      render json: { data: @friend_request }, status: :created
+      render json: FriendRequestSerializer.new(@friend_request).serializable_hash, status: :created
     else
       render error: { message: 'Could not create friend request' }
     end
@@ -23,8 +23,7 @@ class Api::V1::FriendRequestsController < ApplicationController
     authorize @friend_request, :update?
 
     if @friend_request.update(status: FriendRequest.statuses[:accepted])
-      @current_user.friendships.create(friend_id: @friend_request.requester_id)
-      render json: { data: @friend_request }, status: :ok
+      render json: FriendRequestSerializer.new(@friend_request).serializable_hash, status: :ok
     else
       render json: { message: 'Could not update request status' }, status: :unprocessable_entity
     end
@@ -48,7 +47,7 @@ class Api::V1::FriendRequestsController < ApplicationController
   private
 
   def set_pending_friend_requests
-    @pending_friend_requests = @current_user.received_friend_requests.status_pending
+    @pending_friend_requests = @current_user.received_friend_requests.status_pending.includes(:requester, :requestee)
   end
 
   private
