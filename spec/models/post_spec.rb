@@ -2,8 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Post, type: :model do
   subject { build(:post) }
-  let!(:posts) { create_list(:post, 3) }
-  let!(:post) { create(:post) }
+  let!(:posts) { create_list(:post, 4) }
 
   describe 'Validations' do
     it 'is valid with all valid attributes' do
@@ -38,11 +37,11 @@ RSpec.describe Post, type: :model do
 
   describe 'Scopes' do
     it 'has the last post inserted as the first one in the array' do
-      expect(Post.latest.first).to eq(post)
+      expect(Post.latest.first).to eq(posts.last)
     end
 
     it 'has posts ordered in descending order' do
-      expect(Post.latest).to eq([post] + posts.reverse)
+      expect(Post.latest).to eq(posts.reverse)
     end
 
   end
