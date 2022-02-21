@@ -59,7 +59,7 @@ class Api::V1::FriendRequestsController < ApplicationController
   private
 
   def set_requestee
-    @requestee = User.find(params[:requestee_id])
+    @requestee ||= User.find(params[:requestee_id])
   end
 
 end
