@@ -14,7 +14,6 @@ module Likeable
   end
 
   def like(user_id)
-
     likes.create(user_id: user_id) unless is_liked_by(user_id)
   end
 
