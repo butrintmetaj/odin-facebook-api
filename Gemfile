@@ -45,9 +45,6 @@ group :development, :test do
   gem 'rubocop'
   gem 'shoulda-matchers', '~> 4.5', '>= 4.5.1'
   gem 'spring-commands-rspec', '~> 1.0', '>= 1.0.4'
-end
-
-group :test do
   gem 'database_cleaner-active_record'
 end
 

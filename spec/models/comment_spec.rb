@@ -1,8 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe Post, type: :model do
-  subject { build(:post) }
-  let!(:posts) { create_list(:post, 4) }
+RSpec.describe Comment, type: :model do
+  subject { build(:comment) }
 
   describe 'Validations' do
     it 'is valid with all valid attributes' do
@@ -30,8 +29,8 @@ RSpec.describe Post, type: :model do
       should belong_to(:user)
     end
 
-    it 'tests the comments association' do
-      should have_many(:comments)
+    it 'tests the post association' do
+      should belong_to(:post)
     end
 
     it 'tests the likes association' do
@@ -39,14 +38,5 @@ RSpec.describe Post, type: :model do
     end
   end
 
-  describe 'Scopes' do
-    it 'has the last post inserted as the first one in the array' do
-      expect(Post.latest.first).to eq(posts.last)
-    end
 
-    it 'has posts ordered in descending order' do
-      expect(Post.latest).to eq(posts.reverse)
-    end
-
-  end
 end
