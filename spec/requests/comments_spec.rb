@@ -62,7 +62,7 @@ RSpec.describe "Comments", type: :request do
   describe 'DELETE /comments/:id' do
     it 'deletes authenticated users post' do
 
-      expect { delete "/api/v1/posts/#{comments.first.id}", headers: auth_header }.to change { Comment.count }.by(-1)
+      expect { delete "/api/v1/comments/#{comments.first.id}", headers: auth_header }.to change { Comment.count }.by(-1)
       expect(response).to have_http_status(:ok)
     end
   end
