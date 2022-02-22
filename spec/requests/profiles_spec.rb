@@ -8,7 +8,6 @@ RSpec.describe 'Profiles', type: :request do
     it 'returns authenticated users profile information' do
 
       get '/api/v1/auth/profile', headers: auth_header
-
       body = JSON.parse(response.body)['data']
 
       expect(response).to have_http_status(:ok)
