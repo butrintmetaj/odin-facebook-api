@@ -4,7 +4,7 @@ RSpec.describe 'Posts', type: :request do
   let(:user) { create(:user) }
   let(:auth_header) { auth_with_token(user) }
   let!(:posts) { create_list(:post, 2, user_id: user.id) }
-  let(:like) { create(:like)}
+  let!(:like) { create(:like, user_id: user.id) }
 
   describe 'GET /posts' do
     it 'returns current users posts and they friends posts ordered by created_at in descending order' do
@@ -77,7 +77,7 @@ RSpec.describe 'Posts', type: :request do
   describe 'DELETE /posts/:id/unlike' do
     it 'add a like for a specific post' do
 
-      expect { delete "/api/v1/posts/#{like.likeable_id}/unlike", headers: auth_header }.to change { Likes.count }.by(-1)
+      expect { delete "/api/v1/posts/#{like.likeable_id}/unlike", headers: auth_header }.to change { Like.count }.by(-1)
       expect(response).to have_http_status(:ok)
     end
   end

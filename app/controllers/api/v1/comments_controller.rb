@@ -65,6 +65,6 @@ class Api::V1::CommentsController < ApplicationController
   private
 
   def set_post
-    @post ||= Post.includes(:comments).find(params[:post_id])
+    @post ||= Post.includes(:comments, :user).find(params[:post_id])
   end
 end
