@@ -77,6 +77,10 @@ RSpec.describe User, type: :model do
       should have_many(:friendships)
     end
 
+    it 'tests the likes association' do
+      should have_many(:likes)
+    end
+
     it 'tests the friendships association' do
       should have_many(:reverse_friendships).class_name('Friendship')
     end

@@ -8,6 +8,7 @@ class User < ApplicationRecord
   has_many :comments
   has_many :friendships
   has_many :reverse_friendships, class_name: 'Friendship', foreign_key: 'friend_id'
+  has_many :likes
 
   enum gender: {
     not_specified: 0,
