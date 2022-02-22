@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe 'Users', type: :request do
   let!(:user) { create(:user) }
-  let!(:friendships) { create_list(:friendship, 2, user_id: user.id) }
   let!(:users) { create_list(:user, 2) }
   let(:auth_header) { auth_with_token(user) }
 
