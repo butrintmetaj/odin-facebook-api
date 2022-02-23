@@ -4,7 +4,11 @@ class Api::V1::FriendRequestsController < ApplicationController
   before_action :set_pending_friend_requests, only: [:index, :count]
 
   def index
-    render json: FriendRequestSerializer.new(@pending_friend_requests, include: [:requester, :requestee]).serializable_hash,  status: :ok
+    @friend_requests = @pending_friend_requests.page(params[:page]).per(params[:per_page])
+
+    @friend_requests = FriendRequestSerializer.new(@friend_requests).serializable_hash
+
+    render json: @friend_requests.merge!(next_page: params[:page].to_i + 1) ,  status: :ok
   end
 
   def create

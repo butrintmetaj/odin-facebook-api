@@ -2,9 +2,15 @@ class Api::V1::PostsController < ApplicationController
   before_action :set_post, only: [:show, :update, :destroy, :like, :unlike]
 
   def index
-    @posts = Post.where(user_id: @current_user.friends_ids + [@current_user.id]).includes(:user, :comments).latest
+    @posts = Post.where(user_id: @current_user.friends_ids + [@current_user.id])
+                 .includes(:user, :comments)
+                 .latest
+                 .page(params[:page])
+                 .per(params[:per_page])
 
-    render json: PostSerializer.new(@posts, include: [:user, :comments]).serializable_hash, status: :ok
+    @posts = PostSerializer.new(@posts, include: [:user, :comments]).serializable_hash
+
+    render json: @posts.merge!(next_page: params[:page].to_i + 1), status: :ok
   end
 
   def create

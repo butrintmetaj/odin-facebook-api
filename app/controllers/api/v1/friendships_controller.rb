@@ -2,9 +2,14 @@ class Api::V1::FriendshipsController < ApplicationController
   before_action :set_friendship, only: [:destroy]
 
   def index
-    @friends = User.where(id: @current_user.friends_ids).includes(:friendships, :reverse_friendships, :posts)
+    @friends = User.where(id: @current_user.friends_ids)
+                   .includes(:friendships, :reverse_friendships, :posts)
+                   .page(params[:page])
+                   .per(params[:per_page])
 
-    render json: UserSerializer.new(@friends,{include: [:posts],  params: { current_user_id: @current_user.id } }).serializable_hash, status: :ok
+    @friends = UserSerializer.new(@friends, { include: [:posts], params: { current_user_id: @current_user.id } })
+                             .serializable_hash
+    render json: @friends.merge(next_page: params[:page].to_i + 1), status: :ok
   end
 
   def destroy

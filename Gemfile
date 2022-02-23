@@ -62,3 +62,5 @@ gem 'activestorage-validator'
 gem "pundit"
 
 gem 'jsonapi-serializer'
+
+gem 'kaminari'
