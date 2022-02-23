@@ -1,6 +1,7 @@
 class User < ApplicationRecord
-  has_secure_password
+  after_commit :send_welcome_email, on: :create
 
+  has_secure_password
   has_one_attached :avatar
   has_many :posts
   has_many :sent_friend_requests, class_name: 'FriendRequest', foreign_key: 'requester_id'
@@ -40,4 +41,7 @@ class User < ApplicationRecord
       .distinct
   end
 
+  def send_welcome_email
+    WelcomeEmailMailer.with(user: self).welcome_email.deliver_later
+  end
 end

@@ -54,7 +54,20 @@ Rails.application.configure do
   config.active_record.verbose_query_logs = true
 
 
-  config.hosts.clear
+
+  config.action_mailer.default_url_options = { host: 'localhost:3000' }
+
+  config.action_mailer.delivery_method = :smtp
+
+  config.action_mailer.smtp_settings = {
+    :user_name => '319741b5a9b66c',
+    :password => 'f26b7cc77b6292',
+    :address => 'smtp.mailtrap.io',
+    :domain => 'smtp.mailtrap.io',
+    :port => '2525',
+    :authentication => :cram_md5
+  }
+
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true
 

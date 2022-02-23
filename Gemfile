@@ -46,6 +46,7 @@ group :development, :test do
   gem 'shoulda-matchers', '~> 4.5', '>= 4.5.1'
   gem 'spring-commands-rspec', '~> 1.0', '>= 1.0.4'
   gem 'database_cleaner-active_record'
+  gem 'dotenv-rails'
 end
 
 group :development do
@@ -64,3 +65,5 @@ gem "pundit"
 gem 'jsonapi-serializer'
 
 gem 'kaminari'
+
+gem "sidekiq"
