@@ -11,8 +11,8 @@ RSpec.describe 'Posts', type: :request do
       get '/api/v1/posts', headers: auth_header
 
       body = JSON.parse(response.body)['data']
-
       expect(response).to have_http_status(:ok)
+      expect(body.map { |post| post['id'].to_i }).to match_array(posts.map(&:id))
       expect(body.size).to eq(posts.size)
     end
   end

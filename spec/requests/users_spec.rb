@@ -12,6 +12,7 @@ RSpec.describe 'Users', type: :request do
       body = JSON.parse(response.body)['data']
 
       expect(response).to have_http_status(:ok)
+      expect(body.map { |user| user['id'].to_i }).to match_array(users.map(&:id))
       expect(body.size).to eq(users.size)
     end
 

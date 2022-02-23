@@ -12,9 +12,9 @@ RSpec.describe "Comments", type: :request do
       get "/api/v1/posts/#{posts.first.id}/comments", headers: auth_header
 
       body = JSON.parse(response.body)['data']
-
       expect(response).to have_http_status(:ok)
       expect(body['attributes']['id']).to eq(posts.first.id)
+      expect( body['relationships']['comments']['data'].map { |cm| cm['id'].to_i}).to match_array(comments.map(&:id))
 
     end
   end
